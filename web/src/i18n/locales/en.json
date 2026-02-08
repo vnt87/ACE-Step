@@ -58,12 +58,28 @@
   "library": {
     "title": "Library",
     "search": "Search...",
-    "sortNewest": "Newest First",
-    "sortOldest": "Oldest First",
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "longest": "Longest First",
+    "shortest": "Shortest First",
     "noResults": "No tracks found",
     "retake": "Retake",
     "edit": "Edit",
-    "extend": "Extend"
+    "extend": "Extend",
+    "empty": "No tracks yet. Create your first song!",
+    "tracks": "Tracks"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": "Theme",
+    "themeDescription": "Customize the look and feel of the application.",
+    "lightMode": "Light",
+    "darkMode": "Dark",
+    "systemMode": "System",
+    "language": "Language",
+    "languageDescription": "Select your preferred language.",
+    "about": "About",
+    "version": "Version"
   },
   "player": {
     "nowPlaying": "Now Playing"

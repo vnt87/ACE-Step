@@ -58,12 +58,28 @@
     "library": {
         "title": "Thư viện",
         "search": "Tìm kiếm...",
-        "sortNewest": "Mới nhất",
-        "sortOldest": "Cũ nhất",
+        "newest": "Mới nhất",
+        "oldest": "Cũ nhất",
+        "longest": "Dài nhất",
+        "shortest": "Ngắn nhất",
         "noResults": "Không tìm thấy bài hát",
         "retake": "Tạo lại",
         "edit": "Chỉnh sửa",
-        "extend": "Mở rộng"
+        "extend": "Mở rộng",
+        "empty": "Chưa có bài hát nào. Hãy tạo bài hát đầu tiên của bạn!",
+        "tracks": "Bài hát"
+    },
+    "settings": {
+        "title": "Cài đặt",
+        "theme": "Giao diện",
+        "themeDescription": "Tùy chỉnh giao diện của ứng dụng.",
+        "lightMode": "Sáng",
+        "darkMode": "Tối",
+        "systemMode": "Hệ thống",
+        "language": "Ngôn ngữ",
+        "languageDescription": "Chọn ngôn ngữ ưu thích của bạn.",
+        "about": "Giới thiệu",
+        "version": "Phiên bản"
     },
     "player": {
         "nowPlaying": "Đang phát"
