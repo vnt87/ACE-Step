@@ -1,12 +1,25 @@
 import { useTranslation } from 'react-i18next'
 import { Sun, Moon, Monitor } from 'lucide-react'
 import { useSettingsStore } from '@/stores/settings'
-import { cn } from '@/lib/utils'
+import { Heading, Subheading } from '@/components/heading'
+import { Divider } from '@/components/divider'
+import { Text } from '@/components/text'
 import i18n from '@/i18n'
 
 export default function SettingsPage() {
     const { t } = useTranslation()
     const { theme, setTheme, language, setLanguage } = useSettingsStore()
+
+    const themes = [
+        { id: 'light', icon: Sun, label: 'settings.lightMode' },
+        { id: 'dark', icon: Moon, label: 'settings.darkMode' },
+        { id: 'system', icon: Monitor, label: 'settings.systemMode' },
+    ] as const
+
+    const languages = [
+        { id: 'en', label: 'English', flag: '🇺🇸' },
+        { id: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
+    ] as const
 
     const handleLanguageChange = (lang: 'en' | 'vi') => {
         setLanguage(lang)
@@ -14,103 +27,76 @@ export default function SettingsPage() {
     }
 
     return (
-        <div className="mx-auto max-w-2xl p-6">
-            <h1 className="mb-8 text-3xl font-bold">{t('common.settings')}</h1>
+        <div className="space-y-8">
+            <Heading>{t('settings.title')}</Heading>
 
-            <div className="space-y-8">
-                {/* Theme Section */}
-                <section>
-                    <h2 className="mb-4 text-lg font-semibold">Appearance</h2>
-                    <div className="grid grid-cols-3 gap-4">
+            {/* Theme Section */}
+            <div>
+                <Subheading>{t('settings.theme')}</Subheading>
+                <Text className="mt-1 text-zinc-500">{t('settings.themeDescription')}</Text>
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                    {themes.map(({ id, icon: Icon, label }) => (
                         <button
-                            onClick={() => setTheme('light')}
-                            className={cn(
-                                'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all',
-                                theme === 'light'
-                                    ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.1)]'
-                                    : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary)/0.5)]'
-                            )}
+                            key={id}
+                            onClick={() => setTheme(id)}
+                            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${theme === id
+                                    ? 'border-violet-500 bg-violet-50 dark:bg-violet-950'
+                                    : 'border-zinc-200 hover:border-zinc-300 dark:border-zinc-700 dark:hover:border-zinc-600'
+                                }`}
                         >
-                            <Sun className="h-6 w-6" />
-                            <span className="text-sm font-medium">{t('common.lightMode')}</span>
+                            <Icon className={`h-6 w-6 ${theme === id ? 'text-violet-500' : 'text-zinc-500'}`} />
+                            <span className={`text-sm font-medium ${theme === id ? 'text-violet-700 dark:text-violet-300' : ''}`}>
+                                {t(label)}
+                            </span>
                         </button>
-                        <button
-                            onClick={() => setTheme('dark')}
-                            className={cn(
-                                'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all',
-                                theme === 'dark'
-                                    ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.1)]'
-                                    : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary)/0.5)]'
-                            )}
-                        >
-                            <Moon className="h-6 w-6" />
-                            <span className="text-sm font-medium">{t('common.darkMode')}</span>
-                        </button>
-                        <button
-                            onClick={() => setTheme('system')}
-                            className={cn(
-                                'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all',
-                                theme === 'system'
-                                    ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.1)]'
-                                    : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary)/0.5)]'
-                            )}
-                        >
-                            <Monitor className="h-6 w-6" />
-                            <span className="text-sm font-medium">System</span>
-                        </button>
-                    </div>
-                </section>
+                    ))}
+                </div>
+            </div>
 
-                {/* Language Section */}
-                <section>
-                    <h2 className="mb-4 text-lg font-semibold">{t('common.language')}</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                        <button
-                            onClick={() => handleLanguageChange('en')}
-                            className={cn(
-                                'flex items-center gap-3 rounded-lg border-2 p-4 transition-all',
-                                language === 'en'
-                                    ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.1)]'
-                                    : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary)/0.5)]'
-                            )}
-                        >
-                            <span className="text-2xl">🇺🇸</span>
-                            <div className="text-left">
-                                <p className="font-medium">English</p>
-                                <p className="text-sm text-[hsl(var(--muted-foreground))]">English (US)</p>
-                            </div>
-                        </button>
-                        <button
-                            onClick={() => handleLanguageChange('vi')}
-                            className={cn(
-                                'flex items-center gap-3 rounded-lg border-2 p-4 transition-all',
-                                language === 'vi'
-                                    ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.1)]'
-                                    : 'border-[hsl(var(--border))] hover:border-[hsl(var(--primary)/0.5)]'
-                            )}
-                        >
-                            <span className="text-2xl">🇻🇳</span>
-                            <div className="text-left">
-                                <p className="font-medium">Tiếng Việt</p>
-                                <p className="text-sm text-[hsl(var(--muted-foreground))]">Vietnamese</p>
-                            </div>
-                        </button>
-                    </div>
-                </section>
+            <Divider />
 
-                {/* About Section */}
-                <section>
-                    <h2 className="mb-4 text-lg font-semibold">About</h2>
-                    <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4">
-                        <h3 className="font-medium">ACE-Step</h3>
-                        <p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">
-                            A Step Towards Music Generation Foundation Model
-                        </p>
-                        <p className="mt-2 text-xs text-[hsl(var(--muted-foreground))]">
-                            Apache 2.0 License • ACE Studio & StepFun AI
-                        </p>
+            {/* Language Section */}
+            <div>
+                <Subheading>{t('settings.language')}</Subheading>
+                <Text className="mt-1 text-zinc-500">{t('settings.languageDescription')}</Text>
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                    {languages.map(({ id, label, flag }) => (
+                        <button
+                            key={id}
+                            onClick={() => handleLanguageChange(id)}
+                            className={`flex items-center gap-3 rounded-xl border-2 p-4 transition-all ${language === id
+                                    ? 'border-violet-500 bg-violet-50 dark:bg-violet-950'
+                                    : 'border-zinc-200 hover:border-zinc-300 dark:border-zinc-700 dark:hover:border-zinc-600'
+                                }`}
+                        >
+                            <span className="text-2xl">{flag}</span>
+                            <span className={`font-medium ${language === id ? 'text-violet-700 dark:text-violet-300' : ''}`}>
+                                {label}
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <Divider />
+
+            {/* About Section */}
+            <div>
+                <Subheading>{t('settings.about')}</Subheading>
+                <div className="mt-4 rounded-xl border border-zinc-200 p-4 dark:border-zinc-700">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-pink-500">
+                            <span className="text-xl font-bold text-white">A</span>
+                        </div>
+                        <div>
+                            <Text className="font-semibold">ACE-Step Web</Text>
+                            <Text className="text-sm text-zinc-500">{t('settings.version')} 1.0.0</Text>
+                        </div>
                     </div>
-                </section>
+                    <Text className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+                        A modern web interface for ACE-Step, an open-source AI music generation model.
+                    </Text>
+                </div>
             </div>
         </div>
     )

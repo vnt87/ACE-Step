@@ -3,121 +3,154 @@ import { Search, Play, RotateCcw, Pencil, Download, ArrowDownUp } from 'lucide-r
 import { useState } from 'react'
 import { usePlayerStore, type Track } from '@/stores/player'
 import { formatDuration, formatDate } from '@/lib/utils'
+import { Heading } from '@/components/heading'
+import { Input, InputGroup } from '@/components/input'
+import { Button } from '@/components/button'
+import { Badge } from '@/components/badge'
 
 // Mock data - will be replaced with API calls
 const MOCK_TRACKS: Track[] = [
     {
         id: '1',
-        title: 'Pop Song Demo',
-        prompt: 'pop, synth, drums, guitar, 120 bpm, upbeat, catchy',
-        lyrics: '[verse]\nHello world...',
-        audioPath: '/outputs/demo1.wav',
+        title: 'Summer Vibes',
+        prompt: 'upbeat pop, summer, happy, acoustic guitar',
+        lyrics: '',
         duration: 180,
         createdAt: new Date().toISOString(),
+        audioPath: '/outputs/1.wav',
+        params: {},
+    },
+    {
+        id: '2',
+        title: 'Night Drive',
+        prompt: 'synthwave, retrowave, 80s, driving, night',
+        lyrics: '',
+        duration: 240,
+        createdAt: new Date(Date.now() - 86400000).toISOString(),
+        audioPath: '/outputs/2.wav',
+        params: {},
+    },
+    {
+        id: '3',
+        title: 'Peaceful Morning',
+        prompt: 'lo-fi, chill, relaxing, piano, ambient',
+        lyrics: '',
+        duration: 120,
+        createdAt: new Date(Date.now() - 172800000).toISOString(),
+        audioPath: '/outputs/3.wav',
         params: {},
     },
 ]
 
+type SortOption = 'newest' | 'oldest' | 'longest' | 'shortest'
+
 export default function LibraryPage() {
     const { t } = useTranslation()
-    const [searchQuery, setSearchQuery] = useState('')
-    const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest')
     const { setCurrentTrack, setIsPlaying } = usePlayerStore()
+    const [searchQuery, setSearchQuery] = useState('')
+    const [sortBy, setSortBy] = useState<SortOption>('newest')
+
+    const filteredTracks = MOCK_TRACKS.filter(
+        (track) =>
+            track.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            track.prompt?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedTracks = [...filteredTracks].sort((a, b) => {
+        switch (sortBy) {
+            case 'oldest':
+                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            case 'longest':
+                return b.duration - a.duration
+            case 'shortest':
+                return a.duration - b.duration
+            default:
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        }
+    })
 
     const handlePlay = (track: Track) => {
         setCurrentTrack(track)
         setIsPlaying(true)
     }
 
-    const filteredTracks = MOCK_TRACKS.filter(
-        (track) =>
-            track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            track.prompt.toLowerCase().includes(searchQuery.toLowerCase())
-    ).sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime()
-        const dateB = new Date(b.createdAt).getTime()
-        return sortOrder === 'newest' ? dateB - dateA : dateA - dateB
-    })
-
     return (
-        <div className="p-6">
-            {/* Header */}
-            <div className="mb-6 flex items-center justify-between">
-                <h1 className="text-3xl font-bold">{t('library.title')}</h1>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <Heading>{t('library.title')}</Heading>
+                <Badge color="zinc">{MOCK_TRACKS.length} {t('library.tracks')}</Badge>
             </div>
 
-            {/* Search and filters */}
-            <div className="mb-6 flex items-center gap-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[hsl(var(--muted-foreground))]" />
-                    <input
-                        type="text"
+            {/* Search and Sort */}
+            <div className="flex items-center gap-4">
+                <InputGroup className="flex-1">
+                    <Search data-slot="icon" className="size-4" />
+                    <Input
+                        type="search"
+                        placeholder={t('library.search')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder={t('library.search')}
-                        className="w-full rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--input))] py-2 pl-10 pr-4 text-sm placeholder:text-[hsl(var(--muted-foreground))] focus:border-[hsl(var(--primary))] focus:outline-none"
                     />
-                </div>
-                <button
-                    onClick={() => setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')}
-                    className="flex items-center gap-2 rounded-lg border border-[hsl(var(--border))] px-4 py-2 text-sm transition-colors hover:bg-[hsl(var(--muted))]"
+                </InputGroup>
+                <Button
+                    plain
+                    onClick={() => {
+                        const options: SortOption[] = ['newest', 'oldest', 'longest', 'shortest']
+                        const currentIndex = options.indexOf(sortBy)
+                        setSortBy(options[(currentIndex + 1) % options.length])
+                    }}
                 >
-                    <ArrowDownUp className="h-4 w-4" />
-                    {sortOrder === 'newest' ? t('library.sortNewest') : t('library.sortOldest')}
-                </button>
+                    <ArrowDownUp data-slot="icon" />
+                    {t(`library.${sortBy}`)}
+                </Button>
             </div>
 
-            {/* Track list */}
-            {filteredTracks.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[hsl(var(--border))] py-16">
-                    <p className="text-[hsl(var(--muted-foreground))]">{t('library.noResults')}</p>
+            {/* Track List */}
+            {sortedTracks.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-zinc-500">
+                    <p>{t('library.empty')}</p>
                 </div>
             ) : (
-                <div className="space-y-3">
-                    {filteredTracks.map((track) => (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {sortedTracks.map((track) => (
                         <div
                             key={track.id}
-                            className="group flex items-center gap-4 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 transition-all hover:border-[hsl(var(--primary)/0.5)]"
+                            className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-violet-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-violet-600"
                         >
-                            {/* Thumbnail / Play button */}
-                            <button
-                                onClick={() => handlePlay(track)}
-                                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] transition-transform hover:scale-105"
-                            >
-                                <Play className="h-6 w-6 text-white" />
-                            </button>
+                            {/* Track Thumbnail */}
+                            <div className="relative mb-3 aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-violet-500 to-pink-500">
+                                <button
+                                    onClick={() => handlePlay(track)}
+                                    className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
+                                >
+                                    <Play className="h-12 w-12 fill-white text-white" />
+                                </button>
+                            </div>
 
-                            {/* Track info */}
-                            <div className="min-w-0 flex-1">
-                                <h3 className="truncate font-medium">{track.title || 'Untitled'}</h3>
-                                <p className="truncate text-sm text-[hsl(var(--muted-foreground))]">
-                                    {track.prompt}
-                                </p>
-                                <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">
-                                    {formatDuration(track.duration)} • {formatDate(track.createdAt)}
-                                </p>
+                            {/* Track Info */}
+                            <h3 className="truncate font-semibold">{track.title || 'Untitled'}</h3>
+                            <p className="mt-1 truncate text-sm text-zinc-500 dark:text-zinc-400">
+                                {track.prompt}
+                            </p>
+                            <div className="mt-2 flex items-center justify-between text-xs text-zinc-400">
+                                <span>{formatDuration(track.duration)}</span>
+                                <span>{formatDate(track.createdAt)}</span>
                             </div>
 
                             {/* Actions */}
-                            <div className="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                                <button
-                                    className="rounded-lg p-2 transition-colors hover:bg-[hsl(var(--muted))]"
-                                    title={t('library.retake')}
-                                >
-                                    <RotateCcw className="h-4 w-4" />
-                                </button>
-                                <button
-                                    className="rounded-lg p-2 transition-colors hover:bg-[hsl(var(--muted))]"
-                                    title={t('library.edit')}
-                                >
-                                    <Pencil className="h-4 w-4" />
-                                </button>
-                                <button
-                                    className="rounded-lg p-2 transition-colors hover:bg-[hsl(var(--muted))]"
-                                    title={t('common.download')}
-                                >
-                                    <Download className="h-4 w-4" />
-                                </button>
+                            <div className="mt-3 flex items-center gap-1">
+                                <Button plain onClick={() => handlePlay(track)} className="flex-1">
+                                    <Play data-slot="icon" className="size-4" />
+                                </Button>
+                                <Button plain className="flex-1">
+                                    <RotateCcw data-slot="icon" className="size-4" />
+                                </Button>
+                                <Button plain className="flex-1">
+                                    <Pencil data-slot="icon" className="size-4" />
+                                </Button>
+                                <Button plain className="flex-1">
+                                    <Download data-slot="icon" className="size-4" />
+                                </Button>
                             </div>
                         </div>
                     ))}
