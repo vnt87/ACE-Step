@@ -1,0 +1,71 @@
+{
+    "common": {
+        "appName": "ACE-Step",
+        "create": "Tạo mới",
+        "library": "Thư viện",
+        "settings": "Cài đặt",
+        "generate": "Tạo nhạc",
+        "cancel": "Hủy",
+        "save": "Lưu",
+        "delete": "Xóa",
+        "download": "Tải xuống",
+        "play": "Phát",
+        "pause": "Dừng",
+        "loading": "Đang tải...",
+        "error": "Lỗi",
+        "success": "Thành công",
+        "lightMode": "Chế độ sáng",
+        "darkMode": "Chế độ tối",
+        "language": "Ngôn ngữ"
+    },
+    "create": {
+        "title": "Tạo Nhạc",
+        "describeYourSong": "Mô tả bài hát",
+        "useAStyle": "Chọn phong cách",
+        "tagsLabel": "Thẻ / Mô tả",
+        "tagsPlaceholder": "Nhập thể loại, tâm trạng, nhạc cụ, BPM...",
+        "lyricsLabel": "Lời bài hát",
+        "lyricsPlaceholder": "Nhập lời bài hát với các thẻ cấu trúc như [verse], [chorus], [bridge]...",
+        "instrumental": "Nhạc không lời",
+        "duration": "Thời lượng",
+        "durationRandom": "Ngẫu nhiên (30-240 giây)",
+        "advancedSettings": "Cài đặt nâng cao",
+        "inferenceSteps": "Số bước suy luận",
+        "guidanceScale": "Mức hướng dẫn",
+        "scheduler": "Bộ lập lịch",
+        "seed": "Hạt giống",
+        "seedPlaceholder": "Để trống cho ngẫu nhiên",
+        "audio2audio": "Audio sang Audio",
+        "referenceAudio": "Audio tham chiếu",
+        "uploadAudio": "Tải lên Audio",
+        "referenceStrength": "Độ mạnh tham chiếu",
+        "loraModel": "Mô hình LoRA",
+        "generating": "Đang tạo nhạc...",
+        "presets": {
+            "custom": "Tùy chỉnh",
+            "modernPop": "Pop Hiện Đại",
+            "rock": "Rock",
+            "hipHop": "Hip Hop",
+            "country": "Country",
+            "edm": "EDM",
+            "reggae": "Reggae",
+            "classical": "Cổ điển",
+            "jazz": "Jazz",
+            "metal": "Metal",
+            "rnb": "R&B"
+        }
+    },
+    "library": {
+        "title": "Thư viện",
+        "search": "Tìm kiếm...",
+        "sortNewest": "Mới nhất",
+        "sortOldest": "Cũ nhất",
+        "noResults": "Không tìm thấy bài hát",
+        "retake": "Tạo lại",
+        "edit": "Chỉnh sửa",
+        "extend": "Mở rộng"
+    },
+    "player": {
+        "nowPlaying": "Đang phát"
+    }
+}

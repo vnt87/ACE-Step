@@ -1,0 +1,71 @@
+{
+  "common": {
+    "appName": "ACE-Step",
+    "create": "Create",
+    "library": "Library",
+    "settings": "Settings",
+    "generate": "Generate",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "download": "Download",
+    "play": "Play",
+    "pause": "Pause",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "language": "Language"
+  },
+  "create": {
+    "title": "Create Music",
+    "describeYourSong": "Describe Your Song",
+    "useAStyle": "Use a Style",
+    "tagsLabel": "Tags / Description",
+    "tagsPlaceholder": "Enter genre, mood, instruments, BPM...",
+    "lyricsLabel": "Lyrics",
+    "lyricsPlaceholder": "Enter your lyrics with structure tags like [verse], [chorus], [bridge]...",
+    "instrumental": "Instrumental",
+    "duration": "Duration",
+    "durationRandom": "Random (30-240s)",
+    "advancedSettings": "Advanced Settings",
+    "inferenceSteps": "Inference Steps",
+    "guidanceScale": "Guidance Scale",
+    "scheduler": "Scheduler",
+    "seed": "Seed",
+    "seedPlaceholder": "Leave empty for random",
+    "audio2audio": "Audio to Audio",
+    "referenceAudio": "Reference Audio",
+    "uploadAudio": "Upload Audio",
+    "referenceStrength": "Reference Strength",
+    "loraModel": "LoRA Model",
+    "generating": "Generating music...",
+    "presets": {
+      "custom": "Custom",
+      "modernPop": "Modern Pop",
+      "rock": "Rock",
+      "hipHop": "Hip Hop",
+      "country": "Country",
+      "edm": "EDM",
+      "reggae": "Reggae",
+      "classical": "Classical",
+      "jazz": "Jazz",
+      "metal": "Metal",
+      "rnb": "R&B"
+    }
+  },
+  "library": {
+    "title": "Library",
+    "search": "Search...",
+    "sortNewest": "Newest First",
+    "sortOldest": "Oldest First",
+    "noResults": "No tracks found",
+    "retake": "Retake",
+    "edit": "Edit",
+    "extend": "Extend"
+  },
+  "player": {
+    "nowPlaying": "Now Playing"
+  }
+}
